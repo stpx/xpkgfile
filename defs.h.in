@@ -26,15 +26,12 @@
 #ifndef _XPKGFILE_DEFS_H_
 #define _XPKGFILE_DEFS_H_
 
-#include <limits.h>
 #include <xbps.h>
 
-#ifndef PACKAGE_NAME
-#define PACKAGE_NAME
-#endif
-#ifndef PACKAGE_VERSION
-#define PACKAGE_VERSION
-#endif
+#define PACKAGE_NAME    "@PACKAGE_NAME@"
+#define PACKAGE_VERSION "@PACKAGE_VERSION@"
+
+#define PATH_MAX 512
 
 #ifndef XPKGFILE_CACHE_PATH
 #define XPKGFILE_CACHE_PATH "/var/cache/xpkgfile"
