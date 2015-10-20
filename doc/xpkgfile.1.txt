@@ -1,0 +1,70 @@
+xpkgfile(1)
+===========
+
+Name
+----
+
+xpkgfile - XBPS package files search utility
+
+Synopsis
+--------
+
+*xpkgfile* [OPTIONS] 'MODE' [TARGET]
+
+Description
+-----------
+
+*xpkgfile* is a command line tool for searching files in packages for XBPS (X Binary Package System).
+
+Options
+-------
+
+*-h*, *--help*::
+		Print help message and exit.
+
+*-V*, *--version*::
+		Print version and exit.
+
+*-v*, *--verbose*::
+		Enable verbose messages.
+
+Mode
+----
+
+*-l*, *--list*::
+		The target is considered to be a package name rather than a filename,
+		and the contents of the named package are returned.
+
+*-s*, *--search*::
+		Search which package(s) contain the target filename.
+
+*-u*, *--update*::
+		Update the files database. It is recommended to run this as a daily
+		cronjob.
+
+Files
+-----
+
+'/var/cache/xpkgfile/files.plist'
+		Package files metadata.
+
+'/usr/share/doc/xpkgfile/command-not-found.bash'
+		Bash command-not-found handler
+
+'/usr/share/doc/xpkgfile/command-not-found.zsh'
+		Zsh command-not-found handler
+
+See Also
+--------
+
+xbps-query(1)
+
+Author
+------
+
+Steve Prybylski <sa.prybylx@gmail.com>
+
+Bugs
+----
+
+Report bugs at https://github.com/stpx/xpkgfile/issues
