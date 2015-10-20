@@ -2,12 +2,12 @@
 .\"     Title: xpkgfile
 .\"    Author: [see the "Author" section]
 .\" Generator: DocBook XSL Stylesheets v1.79.0 <http://docbook.sf.net/>
-.\"      Date: 10/19/2015
+.\"      Date: 10/20/2015
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "XPKGFILE" "1" "10/19/2015" "\ \&" "\ \&"
+.TH "XPKGFILE" "1" "10/20/2015" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -28,7 +28,7 @@
 .\" * MAIN CONTENT STARTS HERE *
 .\" -----------------------------------------------------------------
 .SH "NAME"
-xpkgfile \- XBPS package files search utility
+xpkgfile \- XBPS package files searching utility
 .SH "SYNOPSIS"
 .sp
 \fBxpkgfile\fR [OPTIONS] \fIMODE\fR [TARGET]
@@ -68,12 +68,21 @@ Search which package(s) contain the target filename\&.
 Update the files database\&. It is recommended to run this as a daily cronjob\&.
 .RE
 .SH "FILES"
-.sp
-\fI/var/cache/xpkgfile/files\&.plist\fR Package files metadata\&.
-.sp
-\fI/usr/share/doc/xpkgfile/command\-not\-found\&.bash\fR Bash command\-not\-found handler
-.sp
-\fI/usr/share/doc/xpkgfile/command\-not\-found\&.zsh\fR Zsh command\-not\-found handler
+.PP
+\fI/var/cache/xpkgfile/files\&.plist\fR
+.RS 4
+Package files metadata\&.
+.RE
+.PP
+\fI/usr/share/doc/xpkgfile/command\-not\-found\&.bash\fR
+.RS 4
+Bash command\-not\-found handler
+.RE
+.PP
+\fI/usr/share/doc/xpkgfile/command\-not\-found\&.zsh\fR
+.RS 4
+Zsh command\-not\-found handler
+.RE
 .SH "SEE ALSO"
 .sp
 xbps\-query(1)

@@ -4,7 +4,7 @@ xpkgfile(1)
 Name
 ----
 
-xpkgfile - XBPS package files search utility
+xpkgfile - XBPS package files searching utility
 
 Synopsis
 --------
@@ -45,13 +45,13 @@ Mode
 Files
 -----
 
-'/var/cache/xpkgfile/files.plist'
+'/var/cache/xpkgfile/files.plist'::
 		Package files metadata.
 
-'/usr/share/doc/xpkgfile/command-not-found.bash'
+'/usr/share/doc/xpkgfile/command-not-found.bash'::
 		Bash command-not-found handler
 
-'/usr/share/doc/xpkgfile/command-not-found.zsh'
+'/usr/share/doc/xpkgfile/command-not-found.zsh'::
 		Zsh command-not-found handler
 
 See Also
