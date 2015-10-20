@@ -42,7 +42,7 @@ search (struct xbps_handle *xhp,
 	xbps_object_t obj;
 	const char *pkgver;
 
-	if ((filesd = xbps_dictionary_internalize_from_file (cfg->plist)) == NULL) {
+	if ((filesd = xbps_dictionary_internalize_from_zfile (cfg->plist)) == NULL) {
 		fprintf (stderr, "error: Please run `xpkgfile --update`.\n");
 		return errno;
 	}

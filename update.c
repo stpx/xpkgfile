@@ -32,6 +32,7 @@
 #include <string.h>
 #include <errno.h>
 #include <assert.h>
+#include <fnmatch.h>
 
 #include "defs.h"
 
@@ -65,7 +66,10 @@ match_files_by_package (xbps_dictionary_t pkg_filesd,
 		xbps_dictionary_get_cstring_nocopy (obj, "file", &filestr);
 		if (filestr == NULL)
 			continue;
-		
+
+		if (fnmatch ("/usr/share/locale*", filestr, 0) == 0)
+			continue;
+
 		if (ffd->verbose)
 			printf ("%s: %s\n", pkgver, filestr);
 
@@ -74,7 +78,8 @@ match_files_by_package (xbps_dictionary_t pkg_filesd,
 }
 
 static bool
-pkg_exists (xbps_dictionary_t filesd, const char *pkgname, const char *version)
+pkg_exists (xbps_dictionary_t filesd, const char *pkgname,
+            const char *version, bool verbose)
 {
 	xbps_array_t allkeys;
 	xbps_object_t obj;
@@ -91,6 +96,8 @@ pkg_exists (xbps_dictionary_t filesd, const char *pkgname, const char *version)
 		/* First, check if pkgnames match, then check if versions match */
 		if (strcmp (pkgname, opkgname) == 0) {
 			if (strcmp (version, oversion) == 0) {
+				if (verbose)
+					fprintf (stdout, "%s-%s: up-to-date\n", pkgname, version);
 				return true;
 			} else {
 				/* if versions don't match we'll just assume it's an
@@ -118,6 +125,12 @@ search_packages_cb (struct xbps_handle *xhp,
 	xbps_dictionary_set_cstring_nocopy (obj, "repository", ffd->repourl);
 	xbps_dictionary_get_cstring_nocopy (obj, "pkgver", &pkgver);
 
+	pkgname = xbps_pkg_name (pkgver);
+	version = xbps_pkg_version (pkgver);
+
+	if (pkg_exists (ffd->resultsd, pkgname, version, ffd->verbose))
+		return 0;
+
 	bfile = xbps_repository_pkg_path (xhp, obj);
 	assert (bfile);
 	filesd = xbps_archive_fetch_plist (bfile, "/files.plist");
@@ -127,17 +140,11 @@ search_packages_cb (struct xbps_handle *xhp,
 		return EINVAL;
 	}
 
-	pkgname = xbps_pkg_name (pkgver);
-	version = xbps_pkg_version (pkgver);
-
-	if (pkg_exists (ffd->resultsd, pkgname, version))
-		return 0;
-
 	ffd->pkgfiles = xbps_array_create ();
 
 	files_keys = xbps_dictionary_all_keys (filesd);
 	for (unsigned int i = 0; i < xbps_array_count (files_keys); i++) {
-		match_files_by_package (filesd, 
+		match_files_by_package (filesd,
 				xbps_array_get (files_keys, i), ffd, pkgver);
 	}
 
@@ -178,7 +185,7 @@ update (struct xbps_handle *xhp, struct config *cfg)
 
 	ffd.verbose = cfg->verbose;
 
-	ffd.resultsd = xbps_dictionary_internalize_from_file (cfg->plist);
+	ffd.resultsd = xbps_dictionary_internalize_from_zfile (cfg->plist);
 	if (ffd.resultsd == NULL)
 		ffd.resultsd = xbps_dictionary_create ();
 
@@ -189,7 +196,7 @@ update (struct xbps_handle *xhp, struct config *cfg)
 		return rv;
 	}
 
-	if (!xbps_dictionary_externalize_to_file (ffd.resultsd, cfg->plist)) {
+	if (!xbps_dictionary_externalize_to_zfile (ffd.resultsd, cfg->plist)) {
 		fprintf (stderr, "Failed to create cache: %s\n", strerror (errno));
 		return errno;
 	}
