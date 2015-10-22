@@ -31,9 +31,10 @@
 void
 match_files_by_pattern (xbps_dictionary_t filesd,
                         const char *pkgver,
-						struct config *cfg)
+                        void *arg)
 {
 	xbps_array_t pkgfiles;
+	struct config *cfg = arg;
 
 	pkgfiles = xbps_dictionary_get (filesd, pkgver);
 	for (unsigned int i = 0; i < xbps_array_count (pkgfiles); i++) {
@@ -45,6 +46,7 @@ match_files_by_pattern (xbps_dictionary_t filesd,
 
 		if (fnmatch (cfg->pattern, filestr, FNM_PERIOD) == 0)
 			printf ("\033[0;1m%s:\033[0m %s\n", pkgver, filestr);
+
 		free (filestr);
 	}
 }

@@ -33,6 +33,7 @@
 #include <errno.h>
 #include <assert.h>
 #include <fnmatch.h>
+#include <libgen.h>
 
 #include "defs.h"
 
@@ -95,11 +96,13 @@ pkg_exists (xbps_dictionary_t filesd, const char *pkgname,
 
 		/* First, check if pkgnames match, then check if versions match */
 		if (strcmp (pkgname, opkgname) == 0) {
+			/* TODO: Do a proper version check */
 			if (strcmp (version, oversion) == 0) {
 				if (verbose)
 					fprintf (stdout, "%s-%s: up-to-date\n", pkgname, version);
 				return true;
 			} else {
+				/* TODO: It may not be safe to always assume it's an update */
 				/* if versions don't match we'll just assume it's an
 				 * update, then remove the old version and return false */
 				xbps_dictionary_remove (filesd, opkgver);
@@ -191,13 +194,14 @@ update (struct xbps_handle *xhp, struct config *cfg)
 
 	rv = xbps_rpool_foreach (xhp, search_repo_cb, &ffd);
 	if (rv != 0 && rv != ENOTSUP) {
-		fprintf (stderr, "Failed to initialize rpool: %s\n",
+		fprintf (stderr, "error: Failed to initialize rpool: %s\n",
 				strerror (rv));
 		return rv;
 	}
 
 	if (!xbps_dictionary_externalize_to_zfile (ffd.resultsd, cfg->plist)) {
-		fprintf (stderr, "Failed to create cache: %s\n", strerror (errno));
+		fprintf (stderr, "error: Unable to write to '%s': %s\n",
+				dirname (cfg->plist), strerror (errno));
 		return errno;
 	}
 

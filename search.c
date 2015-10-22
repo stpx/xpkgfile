@@ -34,7 +34,7 @@
 
 int
 search (struct xbps_handle *xhp,
-		void (*fn)(xbps_dictionary_t, const char *, struct config *),
+		void (*fn)(xbps_dictionary_t, const char *, void *),
 		struct config *cfg)
 {
 	xbps_dictionary_t filesd;
@@ -42,7 +42,7 @@ search (struct xbps_handle *xhp,
 	xbps_object_t obj;
 	const char *pkgver;
 
-	if ((filesd = xbps_dictionary_internalize_from_zfile (cfg->plist)) == NULL) {
+	if ((filesd = xbps_dictionary_internalize_from_file (cfg->plist)) == NULL) {
 		fprintf (stderr, "error: Please run `xpkgfile --update`.\n");
 		return errno;
 	}
@@ -52,8 +52,7 @@ search (struct xbps_handle *xhp,
 		obj = xbps_array_get (allkeys, i);
 		pkgver = xbps_dictionary_keysym_cstring_nocopy (obj);
 
-		if (fn != NULL)
-			(*fn)(filesd, pkgver, cfg);
+		(*fn)(filesd, pkgver, cfg);
 	}
 
 	xbps_object_release (allkeys);

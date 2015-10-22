@@ -30,11 +30,12 @@
 
 
 void list_files (xbps_dictionary_t filesd,
-            const char *pkgver,
-            struct config *cfg)
+                 const char *pkgver,
+                 void *arg)
 {
 	xbps_array_t pkgfiles;
 	const char *pkgname;
+	struct config *cfg = arg;
 
 	pkgname = xbps_pkg_name (pkgver);
 	if (strcmp (pkgname, cfg->pattern) != 0)
@@ -52,5 +53,4 @@ void list_files (xbps_dictionary_t filesd,
 		printf ("%s: %s\n", pkgver, filestr);
 		free (filestr);
 	}
-	return;
 }

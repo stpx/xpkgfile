@@ -74,19 +74,15 @@ main (int argc, char *argv[])
 	struct config cfg = {0};
 	int c, rv = 0;
 	bool list_mode, search_mode, update_mode, opmode;
-	bool verbose, debug;
+	bool verbose;
 
 	list_mode = search_mode = update_mode = false;
-	verbose = debug = false;
+	verbose = false;
 
 	memset (&xh, 0, sizeof (xh));
 
 	while ((c = getopt_long (argc, argv, shortopts, longopts, NULL)) != -1) {
 		switch (c) {
-			case 'd':
-				/* cfg.debug = true; */
-				debug = true;
-				break;
 			case 'h':
 				usage (false);
 				/* NOT REACHED */
@@ -103,7 +99,6 @@ main (int argc, char *argv[])
 				version ();
 				exit (EXIT_SUCCESS);
 			case 'v':
-				/* cfg.verbose = true; */
 				verbose = true;
 				break;
 			case '?':
@@ -133,7 +128,7 @@ main (int argc, char *argv[])
 	}
 
 	if ((list_mode || search_mode) && cfg.pattern == NULL) {
-		fprintf (stderr, "error: You must specify a target.");
+		fprintf (stderr, "error: You must specify a target.\n");
 		exit (EXIT_FAILURE);
 	}
 

@@ -44,14 +44,10 @@ struct config {
 };
 
 int update (struct xbps_handle *, struct config *);
-int search (struct xbps_handle *, void (*fn)(xbps_dictionary_t, const char *, struct config *), struct config *);
+int search (struct xbps_handle *, void (*fn)(xbps_dictionary_t, const char *, void *), struct config *);
 
 /* search callbacks */
-void list_files (xbps_dictionary_t, const char *, struct config *);
-void match_files_by_pattern (xbps_dictionary_t, const char *, struct config *);
-
-bool cache_exists (const char *);
-
-void err_printf (const char *, ...);
+void list_files (xbps_dictionary_t, const char *, void *);
+void match_files_by_pattern (xbps_dictionary_t, const char *, void *);
 
 #endif /* _XPKGFILE_DEFS_H_ */
